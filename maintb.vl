@@ -1,0 +1,78 @@
+`timescale 1ns/1ps
+
+module min_mex_tb();
+
+    // Parameters
+    localparam ADDR_WIDTH = 4;
+    localparam DATA_WIDTH = 5;
+    localparam depth = 1 << ADDR_WIDTH;
+
+    // Testbench Signals
+    reg clk, reset, dataValid, read;
+    wire outValid;
+    reg [ADDR_WIDTH-1:0] addr;
+    reg [DATA_WIDTH-1:0] data_in;
+    wire [DATA_WIDTH-1:0] data;
+    wire resetDone;
+    // Clock Generation (10ns period)
+    always #5 clk = ~clk;
+
+    // Bidirectional data handling
+    assign data = dataValid ? data_in : 'hz;
+
+    // DUT Instantiation
+    min_mex #(
+        .ADDR_WIDTH(ADDR_WIDTH),
+        .DATA_WIDTH(DATA_WIDTH)
+    ) dut (
+        .clk(clk),
+        .reset(reset),
+        .dataValid(dataValid),
+        .outValid(outValid),
+        .read(read),
+        .addr(addr),
+        .data(data),
+        .resetDone(resetDone)
+    );
+
+    integer i;
+
+    initial begin
+        // Initialize signals
+        clk = 0;
+        reset = 1;
+        dataValid = 1;
+        read = 1;
+        addr = 0;
+        data_in = 0;
+
+        // Monitor outputs
+        $monitor("Time: %0t | State: %b | re : %b | we : %b | Addr: %d | Data: %d | Read: %b | DataValid: %b | OutValid: %b", 
+                 $time, dut.state,dut.readEnable,dut.writeEnable, addr, data, read, dataValid, outValid);
+
+        // Apply Reset
+         reset = 0;
+        #10 while (resetDone) begin
+            #10;
+        end
+         dataValid = 1;
+        // Write random values to all memory locations
+        for (i = 0; i < depth; i = i + 1) begin
+            #10 addr = i;
+                data_in = $random % 32;
+                read = 1;
+        #10 read=0;
+        end
+
+        // Read back values from memory
+        for (i = 0; i < depth; i = i + 1) begin
+            #10 addr = i;
+                read = 0;
+                dataValid = 0;
+            #10 read = 0;
+        end
+
+        #20 $finish;
+    end
+
+endmodule

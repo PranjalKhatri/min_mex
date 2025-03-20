@@ -1,0 +1,138 @@
+module min_mex
+#(
+    parameter ADDR_WIDTH = 4,
+    parameter DATA_WIDTH = 5
+)
+(
+    input wire clk,
+    input wire reset,
+    input wire dataValid,
+    output reg outValid,
+    input wire read,
+    input [ADDR_WIDTH-1:0] addr,
+    output wire resetDone,
+    inout wire [DATA_WIDTH-1:0] data
+);
+
+localparam depth = 1 << ADDR_WIDTH;
+
+localparam S_IDLE             = 3'b000;
+localparam S_READ             = 3'b001;
+localparam S_READ_INTERMEDIATE= 3'b010;
+localparam S_RUN              = 3'b011;
+localparam S_DONE             = 3'b100;
+
+reg [2:0] state, nxt_state;
+reg [ADDR_WIDTH-1:0] resetAddr;
+reg resetting;
+
+reg readEnable, writeEnable;
+wire [DATA_WIDTH-1:0] data_mem;
+
+assign data_mem = (writeEnable) ? data : 'hz;
+assign data = (readEnable && !writeEnable) ? data_mem : 'hz;
+assign resetDone = resetting ? 1'b1 : 1'b0; 
+mem #(
+    .ADDR_WIDTH(ADDR_WIDTH),
+    .DATA_WIDTH(DATA_WIDTH)
+) m (
+    .clk(clk),
+    .readEnable(readEnable),
+    .writeEnable(writeEnable),
+    .addr(reset ? resetAddr : addr),
+    .data(data_mem) 
+);
+
+initial begin
+    resetAddr<=0;
+    resetting<=1;
+end
+
+always @(posedge clk) begin
+    if (reset) begin
+        state <= S_IDLE;
+        resetting<=1;
+    end
+    else 
+        state <= nxt_state;
+end
+
+always @(*) begin
+    // $display("time : %0t | state : %b | re: %b | we : %b | data_mem : %d | resetting : %b | resetAddr : %d",$time,state,readEnable,writeEnable,data_mem,resetting,resetAddr);
+    case (state)
+        S_IDLE: 
+            nxt_state = (resetting) ? S_IDLE : S_READ;
+
+        S_READ: 
+            nxt_state = (read && dataValid) ? S_READ_INTERMEDIATE :
+                        S_RUN;
+
+        S_READ_INTERMEDIATE:
+            nxt_state = S_READ; 
+
+        S_RUN: 
+            nxt_state = S_RUN;
+
+        S_DONE: 
+            nxt_state = S_DONE;
+
+        default: 
+            nxt_state = S_IDLE;
+    endcase
+end
+
+always @(posedge clk) begin
+    case (state)
+        S_IDLE: begin
+            readEnable <= 0;
+            writeEnable <= 0; 
+            outValid <= 0;
+        end
+
+        S_READ: begin
+            resetting <= 0;
+            resetAddr <= 0;
+            if (read && dataValid && !resetting) begin
+                readEnable <= 0;
+                writeEnable <= 1;
+            end else begin
+                readEnable <= 0;
+                writeEnable <= 0;
+            end
+        end
+
+        S_READ_INTERMEDIATE: begin
+            readEnable <= 0;
+            writeEnable <= 1;
+        end
+
+        S_RUN: begin
+            readEnable <= 1;
+            writeEnable <= 0;
+            outValid <= 0;
+        end
+
+        S_DONE: begin
+            outValid <= 1;
+        end
+
+        default: begin
+            readEnable <= 0;
+            writeEnable <= 0;
+            outValid <= 0;
+        end
+    endcase
+end
+
+always @(posedge clk) begin
+    if (resetting) begin
+        if (resetAddr < depth - 1) 
+            resetAddr <= resetAddr + 1;
+        else begin
+            resetting <= 0;
+            $display("finished resetting");
+        end
+    end
+end
+
+endmodule

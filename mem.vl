@@ -1,0 +1,30 @@
+/*
+@brief:  single port memory 
+I assigned Write high priority; Why? you ask
+'cause write more expensive :)
+*/
+module mem
+#(
+    parameter ADDR_WIDTH = 4,
+    parameter DATA_WIDTH = 5
+)
+(
+    input wire clk,//sequential memory ckt [posedge enabled]
+    input wire readEnable,
+    input wire writeEnable,
+    input [ADDR_WIDTH-1:0] addr,
+    inout [DATA_WIDTH-1:0] data
+);
+reg [DATA_WIDTH-1:0] memory [(1<<ADDR_WIDTH)-1:0];
+reg [DATA_WIDTH-1:0] temp_data;
+always @(posedge clk ) begin
+    if(writeEnable) begin
+        memory[addr] <= data;
+    end else if(readEnable)begin
+      temp_data <= memory[addr];
+    //   data
+    end
+end
+assign data = (readEnable && !writeEnable) ? temp_data : 'hz;
+// assign data = readEnable ? temp_data : {DATA_WIDTH{1'bz}};//assign int max ig
+endmodule

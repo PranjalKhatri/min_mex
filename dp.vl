@@ -1,0 +1,50 @@
+module min_mex_dp
+#(
+    parameter ADDR_WIDTH = 4,
+    parameter DATA_WIDTH = 5
+)
+(
+    input wire clk,
+    input wire reset, // Received from Controller
+    output reg resetComplete, // Sent to Controller
+    input wire readEnable,
+    input wire writeEnable,
+    input wire [ADDR_WIDTH-1:0] addr,
+    input wire [DATA_WIDTH-1:0] data
+);
+localparam depth = 1 << ADDR_WIDTH;
+reg [ADDR_WIDTH-1:0] resetAddr;
+reg resetting;
+
+wire [DATA_WIDTH-1:0] data_mem;
+assign data_mem = readEnable ? data : 'hz;
+
+mem #(
+    .ADDR_WIDTH(ADDR_WIDTH),
+    .DATA_WIDTH(DATA_WIDTH)
+) m (
+    .clk(clk),
+    .readEnable(readEnable),
+    .writeEnable(writeEnable),
+    .addr(reset ? resetAddr : addr), // Use resetAddr during reset
+    .data(reset ? 0 : data) // Write 0 during reset
+);
+
+always @(posedge clk) begin
+    if (reset) begin
+        resetComplete <= 0;
+        resetAddr <= 0;
+        resetting <= 1;
+    end 
+    else if (resetting) begin
+        if (resetAddr < depth - 1) begin
+            resetAddr <= resetAddr + 1; // Iterate through memory addresses
+        end 
+        else begin
+            resetting <= 0;
+            resetComplete <= 1; // Notify Controller that reset is done
+        end
+    end
+end
+
+endmodule
