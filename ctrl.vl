@@ -15,7 +15,9 @@ localparam S_READ             = 3'b001;
 localparam S_READ_INTERMEDIATE_1 = 3'b010;
 localparam S_READ_INTERMEDIATE_2 = 3'b011;
 localparam S_RUN              = 3'b100;
-localparam S_DONE            = 3'b101;
+localparam S_RUN_INTERMEDIATE_1 = 3'b101;
+localparam S_RUN_INTERMEDIATE_2 = 3'b110;
+localparam S_DONE            = 3'b111;
 
 reg [2:0] nxt_state;
 // reg resetting;
@@ -50,7 +52,14 @@ always @(*) begin
             nxt_state = dataValid ? S_READ : S_RUN;
         end
         S_RUN: begin
-            if (dp_done)
+             if (dp_done)
+                nxt_state = S_DONE;
+            else
+                nxt_state=S_RUN_INTERMEDIATE_1;
+        end
+        S_RUN_INTERMEDIATE_1 : nxt_state=S_RUN_INTERMEDIATE_2;
+        S_RUN_INTERMEDIATE_2 : begin
+          if (dp_done)
                 nxt_state = S_DONE;
             else
                 nxt_state = S_RUN;

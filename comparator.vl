@@ -1,31 +1,109 @@
-module comparator_5bit_gate_level (
-    input [4:0] A,  // 5-bit input A
-    input [4:0] B,  // 5-bit input B
-    output [4:0] greater  // 5-bit output, which is the greater of A and B
+// 2:1 Multiplexer module at gate level
+module mux_2to1(
+    input in0,
+    input in1,
+    input sel,
+    output out
 );
+    wire not_sel;
+    wire and_in0, and_in1;
+    
+    // Invert the select signal
+    not not_sel_gate(not_sel, sel);
+    
+    // AND gates for selection
+    and and_in0_gate(and_in0, in0, not_sel);
+    and and_in1_gate(and_in1, in1, sel);
+    
+    // OR gate for output
+    or or_gate(out, and_in0, and_in1);
+endmodule
 
-    wire [4:0] gt, eq, lt;
-    wire a_bigger, equal;
+// 5-bit 2:1 Multiplexer module using the 1-bit mux
+module mux_2to1_5bit(
+    input [4:0] in0,
+    input [4:0] in1,
+    input sel,
+    output [4:0] out
+);
+    // Instantiate 5 1-bit multiplexers
+    mux_2to1 mux0(in0[0], in1[0], sel, out[0]);
+    mux_2to1 mux1(in0[1], in1[1], sel, out[1]);
+    mux_2to1 mux2(in0[2], in1[2], sel, out[2]);
+    mux_2to1 mux3(in0[3], in1[3], sel, out[3]);
+    mux_2to1 mux4(in0[4], in1[4], sel, out[4]);
+endmodule
 
-    // Generate comparison for each bit
-    genvar i;
-    generate
-        for (i = 0; i < 5; i = i + 1) begin : compare_bits
-            // Compare A[i] and B[i] bit by bit
-            and(gt[i], A[i], ~B[i]);  // A[i] > B[i]
-            and(lt[i], ~A[i], B[i]);  // A[i] < B[i]
-            and(eq[i], A[i], B[i]);   // A[i] == B[i]
-        end
-    endgenerate
-
-    // Logic to output the greater of A and B
-    // If A > B, output A; else output B
-    assign a_bigger = (gt[4] | (eq[4] & gt[3]) | (eq[4] & eq[3] & gt[2]) |
-                       (eq[4] & eq[3] & eq[2] & gt[1]) | (eq[4] & eq[3] & eq[2] & eq[1] & gt[0]));
-
-    assign equal = (eq[4] & eq[3] & eq[2] & eq[1] & eq[0]);
-
-    // Output the greater value
-    assign greater = a_bigger ? A : B;
-
+// 5-bit comparator using the multiplexer module
+module comparator(
+    input [4:0] A,
+    input [4:0] B,
+    output [4:0] greater,
+    output [4:0] smaller
+);
+    // Intermediate wires for comparison results
+    wire A_gt_B;  // 1 if A > B, 0 otherwise
+    
+    // Bit-wise equality and greater-than comparisons
+    wire eq0, eq1, eq2, eq3, eq4;
+    wire gt0, gt1, gt2, gt3, gt4;
+    
+    // Intermediate wires for building the cascaded comparison
+    wire eq4_and_gt3, eq4_eq3_and_gt2, eq4_eq3_eq2_and_gt1, eq4_eq3_eq2_eq1_and_gt0;
+    wire eq4_and_eq3, eq4_eq3_and_eq2, eq4_eq3_eq2_and_eq1;
+    
+    // Bit-wise equality (XNOR gates)
+    xnor eq0_gate(eq0, A[0], B[0]);
+    xnor eq1_gate(eq1, A[1], B[1]);
+    xnor eq2_gate(eq2, A[2], B[2]);
+    xnor eq3_gate(eq3, A[3], B[3]);
+    xnor eq4_gate(eq4, A[4], B[4]);
+    
+    // Bit-wise greater than (A bit > B bit)
+    wire not_B0, not_B1, not_B2, not_B3, not_B4;
+    not not_B0_gate(not_B0, B[0]);
+    not not_B1_gate(not_B1, B[1]);
+    not not_B2_gate(not_B2, B[2]);
+    not not_B3_gate(not_B3, B[3]);
+    not not_B4_gate(not_B4, B[4]);
+    
+    and gt0_gate(gt0, A[0], not_B0);
+    and gt1_gate(gt1, A[1], not_B1);
+    and gt2_gate(gt2, A[2], not_B2);
+    and gt3_gate(gt3, A[3], not_B3);
+    and gt4_gate(gt4, A[4], not_B4);
+    
+    // Build the cascaded comparison for A > B
+    // eq4 & gt3
+    and eq4_gt3_gate(eq4_and_gt3, eq4, gt3);
+    
+    // eq4 & eq3
+    and eq4_eq3_gate(eq4_and_eq3, eq4, eq3);
+    
+    // eq4 & eq3 & gt2
+    and eq4_eq3_gt2_gate(eq4_eq3_and_gt2, eq4_and_eq3, gt2);
+    
+    // eq4 & eq3 & eq2
+    and eq4_eq3_eq2_gate(eq4_eq3_and_eq2, eq4_and_eq3, eq2);
+    
+    // eq4 & eq3 & eq2 & gt1
+    and eq4_eq3_eq2_gt1_gate(eq4_eq3_eq2_and_gt1, eq4_eq3_and_eq2, gt1);
+    
+    // eq4 & eq3 & eq2 & eq1
+    and eq4_eq3_eq2_eq1_gate(eq4_eq3_eq2_and_eq1, eq4_eq3_and_eq2, eq1);
+    
+    // eq4 & eq3 & eq2 & eq1 & gt0
+    and eq4_eq3_eq2_eq1_gt0_gate(eq4_eq3_eq2_eq1_and_gt0, eq4_eq3_eq2_and_eq1, gt0);
+    
+    // A_gt_B = gt4 | (eq4 & gt3) | (eq4 & eq3 & gt2) | (eq4 & eq3 & eq2 & gt1) | (eq4 & eq3 & eq2 & eq1 & gt0)
+    wire or_temp1, or_temp2, or_temp3;
+    or or_gate1(or_temp1, gt4, eq4_and_gt3);
+    or or_gate2(or_temp2, or_temp1, eq4_eq3_and_gt2);
+    or or_gate3(or_temp3, or_temp2, eq4_eq3_eq2_and_gt1);
+    or final_gt_gate(A_gt_B, or_temp3, eq4_eq3_eq2_eq1_and_gt0);
+    
+    // Use the 5-bit multiplexers to select outputs
+    mux_2to1_5bit greater_mux(B, A, A_gt_B, greater);  // If A>B, select A; else select B
+    mux_2to1_5bit smaller_mux(A, B, A_gt_B, smaller);  // If A>B, select B; else select A
+    
 endmodule

@@ -1,0 +1,73 @@
+module seven_segment_display (
+    input wire clk,          // Clock signal
+    input wire rst,          // Reset signal
+    input wire [4:0] num,    // 5-bit binary number to display
+    output reg [6:0] seg,    // 7-segment display segments (a-g)
+    output reg [7:0] an      // Anode signals for 8 displays
+);
+
+    reg [3:0] tens;          // Tens digit (0-3)
+    reg [3:0] units;         // Units digit (0-9)
+    reg [3:0] display_num;   // Number to display on the current segment
+    reg [2:0] display_select; // Select which display is active
+
+    // Split the 5-bit number into tens and units
+    always @(*) begin
+        if (num < 10) begin
+            tens = 4'b0000;  // No tens digit
+            units = num[3:0]; // Units digit is the number itself
+        end else if (num < 20) begin
+            tens = 4'b0001;  // Tens digit is 1
+            units = num - 10; // Units digit is num - 10
+        end else if (num < 30) begin
+            tens = 4'b0010;  // Tens digit is 2
+            units = num - 20; // Units digit is num - 20
+        end else begin
+            tens = 4'b0011;  // Tens digit is 3
+            units = num - 30; // Units digit is num - 30
+        end
+    end
+
+    // 7-segment encoding for digits 0-9
+    always @(*) begin
+        case (display_num)
+            4'b0000: seg = 7'b1000000; // 0
+            4'b0001: seg = 7'b1111001; // 1
+            4'b0010: seg = 7'b0100100; // 2
+            4'b0011: seg = 7'b0110000; // 3
+            4'b0100: seg = 7'b0011001; // 4
+            4'b0101: seg = 7'b0010010; // 5
+            4'b0110: seg = 7'b0000010; // 6
+            4'b0111: seg = 7'b1111000; // 7
+            4'b1000: seg = 7'b0000000; // 8
+            4'b1009: seg = 7'b0010000; // 9
+            default: seg = 7'b1111111; // Blank (all segments off)
+        endcase
+    end
+
+    // Anode control (assuming 8 displays)
+    always @(posedge clk or posedge rst) begin
+        if (rst) begin
+            display_select <= 3'b000;
+            an <= 8'b11111111; // Turn off all displays initially
+        end else begin
+            display_select <= display_select + 1;
+            an <= 8'b11111111; // Turn off all displays
+
+            case (display_select)
+                3'b000: begin
+                    display_num = tens; // Display tens digit
+                    an[0] = 1'b0;      // Turn on the first display
+                end
+                3'b001: begin
+                    display_num = units; // Display units digit
+                    an[1] = 1'b0;       // Turn on the second display
+                end
+                default: begin
+                    display_num = 4'b1111; // Blank
+                end
+            endcase
+        end
+    end
+
+endmodule

@@ -34,7 +34,7 @@ module min_mex_tb;
     reg [31:0] seed;
 
     initial begin
-        seed = 11;
+        seed = 99999999;
         // Initialize signals
         clk = 0;
         reset = 0;
@@ -73,7 +73,7 @@ module min_mex_tb;
         // $display("Data at address %b: %b", addr, data_out);
         
         // End simulation
-        #30 $finish;
+        #160 $finish;
     end
     
     initial begin
