@@ -44,7 +44,7 @@ mem #(
 );
 
 always @(posedge clk) begin
-    $display("data_out :%b , mem_data : %b ",data_out,mem_data);
+    // $display("data_out :%b , mem_data : %b ",data_out,mem_data);
     if (reset) begin
         resetAddr <= 0;
         resetting <= 1;
@@ -81,6 +81,9 @@ always @(posedge clk) begin
             dp_done=1;
         end
         S_DONE: begin
+            re=1;
+            we=0;
+            dp_done=1;
         end
     endcase
 end

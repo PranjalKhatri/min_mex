@@ -1,8 +1,8 @@
 `timescale 1ns/1ps
 
 module min_mex_tb;
-    parameter ADDR_WIDTH = 4;
-    parameter DATA_WIDTH = 6;
+    parameter ADDR_WIDTH = 3;
+    parameter DATA_WIDTH = 5;
     
     reg clk;
     reg reset;
@@ -26,13 +26,15 @@ module min_mex_tb;
         .data_out(data_out)
     );
     always @(*) begin
-        $monitor("TIME: %0t | clk: %b | reset: %b | dataValid: %b | read: %b | addr: %b | data: %b | outValid: %b | data_out: %b", 
-                 $time, clk, reset, dataValid, read, addr, data, outValid, data_out);
+        // $monitor("TIME: %0t | clk: %b | reset: %b | dataValid: %b | read: %b | addr: %b | data: %d | outValid: %b | data_out: %d", 
+        //          $time, clk, reset, dataValid, read, addr, data, outValid, data_out);
     end
     // Clock generation
     always #5 clk = ~clk;
-    
+    reg [31:0] seed;
+
     initial begin
+        seed = 11;
         // Initialize signals
         clk = 0;
         reset = 0;
@@ -46,16 +48,29 @@ module min_mex_tb;
             
         end
         // Write data to memory
-        #10 dataValid = 1;read=1; addr = 4'b0010; data = 5'b10101;
-        #10 dataValid = 0;read = 0;
-        
+        // #10 dataValid = 1;read=1; addr = 4'b0010; data = 5'b10101;
+        // #10 dataValid = 0;read = 0;
+        $display("Writing data to memory...");
+        dataValid = 1; read = 1;
+        for (integer i = 0; i < (1 << ADDR_WIDTH); i = i + 1) begin
+            read=1;
+            #10 addr = i; data = $random(seed)&5'b11111; // Write (i + 1) to address i
+            #5 read=0;
+            $display("Data write at address %d with value %d",addr,data);
+        end
+        dataValid = 0; read = 0; // Deassert dataValid
         // Read data back
         #10  addr = 4'b0010;
         // Wait for output to become valid
         #20;
-        
+        $display("Reading data from memory...");
+        for (integer i = 0; i < (1 << ADDR_WIDTH); i = i + 1) begin
+            addr = i; // Read from address i
+            #10; // Wait for output to become valid
+            $display("Data at address %d: %d", addr, data_out);
+        end
         // Display results
-        $display("Data at address %b: %b", addr, data_out);
+        // $display("Data at address %b: %b", addr, data_out);
         
         // End simulation
         #30 $finish;
