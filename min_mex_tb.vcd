@@ -1,5 +1,5 @@
 $date
-	Fri Mar 21 13:37:24 2025
+	Fri Mar 21 13:38:32 2025
 $end
 $version
 	Icarus Verilog
@@ -10,12 +10,12 @@ $end
 $scope module min_mex_tb $end
 $var event 1 ! _ivl_5 $end
 $var wire 1 " outValid $end
-$var wire 5 # data_out [4:0] $end
+$var wire 6 # data_out [5:0] $end
 $var parameter 32 $ ADDR_WIDTH $end
 $var parameter 32 % DATA_WIDTH $end
 $var reg 3 & addr [2:0] $end
 $var reg 1 ' clk $end
-$var reg 5 ( data [4:0] $end
+$var reg 6 ( data [5:0] $end
 $var reg 1 ) dataValid $end
 $var reg 1 * read $end
 $var reg 1 + reset $end
@@ -23,7 +23,7 @@ $var reg 32 , seed [31:0] $end
 $scope module dut $end
 $var wire 3 - addr [2:0] $end
 $var wire 1 ' clk $end
-$var wire 5 . data [4:0] $end
+$var wire 6 . data [5:0] $end
 $var wire 1 ) dataValid $end
 $var wire 1 * read $end
 $var wire 1 + reset $end
@@ -31,7 +31,7 @@ $var wire 3 / state [2:0] $end
 $var wire 1 0 resetComplete $end
 $var wire 1 " outValid $end
 $var wire 1 1 dp_done $end
-$var wire 4 2 data_out [3:0] $end
+$var wire 5 2 data_out [4:0] $end
 $var parameter 32 3 ADDR_WIDTH $end
 $var parameter 32 4 DATA_WIDTH $end
 $scope module control_unit $end
@@ -57,11 +57,11 @@ $upscope $end
 $scope module datapath_unit $end
 $var wire 3 @ addr [2:0] $end
 $var wire 1 ' clk $end
-$var wire 5 A data_in [4:0] $end
-$var wire 5 B mem_data [4:0] $end
+$var wire 6 A data_in [5:0] $end
+$var wire 6 B mem_data [5:0] $end
 $var wire 1 + reset $end
 $var wire 3 C state [2:0] $end
-$var wire 5 D data_out [4:0] $end
+$var wire 6 D data_out [5:0] $end
 $var parameter 32 E ADDR_WIDTH $end
 $var parameter 32 F DATA_WIDTH $end
 $var parameter 3 G S_DONE $end
@@ -73,19 +73,19 @@ $var parameter 3 L S_RUN $end
 $var parameter 35 M depth $end
 $var reg 1 1 dp_done $end
 $var reg 1 N re $end
-$var reg 5 O resetAddr [4:0] $end
+$var reg 6 O resetAddr [5:0] $end
 $var reg 1 0 resetComplete $end
 $var reg 1 P resetting $end
 $var reg 1 Q we $end
 $scope module m $end
 $var wire 3 R addr [2:0] $end
 $var wire 1 ' clk $end
-$var wire 5 S data [4:0] $end
+$var wire 6 S data [5:0] $end
 $var wire 1 N readEnable $end
 $var wire 1 Q writeEnable $end
 $var parameter 32 T ADDR_WIDTH $end
 $var parameter 32 U DATA_WIDTH $end
-$var reg 5 V temp_data [4:0] $end
+$var reg 6 V temp_data [5:0] $end
 $upscope $end
 $upscope $end
 $upscope $end
@@ -99,7 +99,7 @@ $upscope $end
 $enddefinitions $end
 $comment Show the parameter values. $end
 $dumpall
-b101 U
+b110 U
 b11 T
 b1000 M
 b100 L
@@ -108,7 +108,7 @@ b10 J
 b1 I
 b0 H
 b101 G
-b101 F
+b110 F
 b11 E
 b1000 =
 b100 <
@@ -117,11 +117,11 @@ b10 :
 b1 9
 b0 8
 b101 7
-b101 6
+b110 6
 b11 5
-b101 4
+b110 4
 b11 3
-b101 %
+b110 %
 b11 $
 $end
 #0
@@ -155,7 +155,7 @@ b1011 ,
 b0 (
 0'
 b0 &
-b0xxxx #
+b0xxxxx #
 x"
 1!
 $end
@@ -176,7 +176,7 @@ b10 >
 b1 /
 b1 ?
 b1 C
-b0zzzz #
+b0zzzzz #
 bz 2
 b0 B
 b0 S
@@ -371,8 +371,8 @@ b10 @
 b10 R
 #145000
 b10010 V
-b10 #
-b10 2
+b10010 #
+b10010 2
 b10010 B
 b10010 S
 b10010 D
@@ -427,8 +427,8 @@ b10 @
 b10 R
 b10 X
 #185000
-b10 #
-b10 2
+b10010 #
+b10010 2
 b10010 D
 b10010 B
 b10010 S
@@ -481,8 +481,8 @@ b110 @
 b110 R
 b110 X
 #225000
-b111 #
-b111 2
+b10111 #
+b10111 2
 b10111 D
 b10111 B
 b10111 S
@@ -496,8 +496,8 @@ b111 @
 b111 R
 b111 X
 #235000
-b1011 #
-b1011 2
+b11011 #
+b11011 2
 b11011 D
 b11011 B
 b11011 S
