@@ -1,5 +1,5 @@
 $date
-	Fri Mar 21 13:08:28 2025
+	Fri Mar 21 13:18:22 2025
 $end
 $version
 	Icarus Verilog
@@ -9,19 +9,19 @@ $timescale
 $end
 $scope module min_mex_tb $end
 $var wire 1 ! outValid $end
-$var wire 5 " data_out [4:0] $end
+$var wire 6 " data_out [5:0] $end
 $var parameter 32 # ADDR_WIDTH $end
 $var parameter 32 $ DATA_WIDTH $end
 $var reg 4 % addr [3:0] $end
 $var reg 1 & clk $end
-$var reg 5 ' data [4:0] $end
+$var reg 6 ' data [5:0] $end
 $var reg 1 ( dataValid $end
 $var reg 1 ) read $end
 $var reg 1 * reset $end
 $scope module dut $end
 $var wire 4 + addr [3:0] $end
 $var wire 1 & clk $end
-$var wire 5 , data [4:0] $end
+$var wire 6 , data [5:0] $end
 $var wire 1 ( dataValid $end
 $var wire 1 ) read $end
 $var wire 1 * reset $end
@@ -29,7 +29,7 @@ $var wire 3 - state [2:0] $end
 $var wire 1 . resetComplete $end
 $var wire 1 ! outValid $end
 $var wire 1 / dp_done $end
-$var wire 4 0 data_out [3:0] $end
+$var wire 5 0 data_out [4:0] $end
 $var parameter 32 1 ADDR_WIDTH $end
 $var parameter 32 2 DATA_WIDTH $end
 $scope module control_unit $end
@@ -55,11 +55,11 @@ $upscope $end
 $scope module datapath_unit $end
 $var wire 4 > addr [3:0] $end
 $var wire 1 & clk $end
-$var wire 5 ? data_in [4:0] $end
-$var wire 5 @ mem_data [4:0] $end
+$var wire 6 ? data_in [5:0] $end
+$var wire 6 @ mem_data [5:0] $end
 $var wire 1 * reset $end
 $var wire 3 A state [2:0] $end
-$var wire 5 B data_out [4:0] $end
+$var wire 6 B data_out [5:0] $end
 $var parameter 32 C ADDR_WIDTH $end
 $var parameter 32 D DATA_WIDTH $end
 $var parameter 3 E S_DONE $end
@@ -71,19 +71,19 @@ $var parameter 3 J S_RUN $end
 $var parameter 36 K depth $end
 $var reg 1 / dp_done $end
 $var reg 1 L re $end
-$var reg 5 M resetAddr [4:0] $end
+$var reg 6 M resetAddr [5:0] $end
 $var reg 1 . resetComplete $end
 $var reg 1 N resetting $end
 $var reg 1 O we $end
 $scope module m $end
 $var wire 4 P addr [3:0] $end
 $var wire 1 & clk $end
-$var wire 5 Q data [4:0] $end
+$var wire 6 Q data [5:0] $end
 $var wire 1 L readEnable $end
 $var wire 1 O writeEnable $end
 $var parameter 32 R ADDR_WIDTH $end
 $var parameter 32 S DATA_WIDTH $end
-$var reg 5 T temp_data [4:0] $end
+$var reg 6 T temp_data [5:0] $end
 $upscope $end
 $upscope $end
 $upscope $end
@@ -91,7 +91,7 @@ $upscope $end
 $enddefinitions $end
 $comment Show the parameter values. $end
 $dumpall
-b101 S
+b110 S
 b100 R
 b10000 K
 b100 J
@@ -100,7 +100,7 @@ b10 H
 b1 G
 b0 F
 b101 E
-b101 D
+b110 D
 b100 C
 b10000 ;
 b100 :
@@ -109,11 +109,11 @@ b10 8
 b1 7
 b0 6
 b101 5
-b101 4
+b110 4
 b100 3
-b101 2
+b110 2
 b100 1
-b101 $
+b110 $
 b100 #
 $end
 #0
@@ -144,7 +144,7 @@ b0 +
 b0 '
 0&
 b0 %
-b0xxxx "
+b0xxxxx "
 x!
 $end
 #5000
@@ -160,7 +160,7 @@ b0 A
 b1 -
 b1 =
 b1 A
-b0zzzz "
+b0zzzzz "
 bz 0
 b0 @
 b0 Q
@@ -208,7 +208,7 @@ b100 A
 #50000
 0&
 #55000
-b0xxxx "
+b0xxxxx "
 bx 0
 bx @
 bx Q
@@ -221,8 +221,8 @@ b101 <
 #60000
 0&
 #65000
-b101 "
-b101 0
+b10101 "
+b10101 0
 1!
 b10101 B
 b10101 @

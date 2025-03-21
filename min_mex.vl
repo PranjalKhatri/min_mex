@@ -16,7 +16,11 @@ module min_mex
 wire [2:0] state;
 wire dp_done;
 wire resetComplete;
-min_mex_ctrl control_unit (
+min_mex_ctrl
+#(
+    .ADDR_WIDTH(ADDR_WIDTH),
+    .DATA_WIDTH(DATA_WIDTH)
+) control_unit (
     .clk(clk),
     .reset(reset),
     .dataValid(dataValid),
@@ -27,7 +31,12 @@ min_mex_ctrl control_unit (
     .state(state)
 );
 
-min_mex_dp datapath_unit (
+min_mex_dp 
+#(
+    .ADDR_WIDTH(ADDR_WIDTH),
+    .DATA_WIDTH(DATA_WIDTH)
+)
+datapath_unit (
     .clk(clk),
     .reset(reset),
     .state(state),

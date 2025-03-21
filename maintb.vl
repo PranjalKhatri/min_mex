@@ -2,7 +2,7 @@
 
 module min_mex_tb;
     parameter ADDR_WIDTH = 4;
-    parameter DATA_WIDTH = 5;
+    parameter DATA_WIDTH = 6;
     
     reg clk;
     reg reset;
