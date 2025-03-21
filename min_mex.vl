@@ -11,16 +11,12 @@ module min_mex
     input wire [ADDR_WIDTH-1:0] addr,
     input wire [DATA_WIDTH-1:0] data,
     output wire outValid,
-    output wire[DATA_WIDTH-1] data_out
+    output wire[DATA_WIDTH-1: 0] data_out
 );
 wire [2:0] state;
 wire dp_done;
 wire resetComplete;
-min_mex_ctrl
-#(
-    .ADDR_WIDTH(ADDR_WIDTH),
-    .DATA_WIDTH(DATA_WIDTH)
-) control_unit (
+min_mex_ctrl control_unit (
     .clk(clk),
     .reset(reset),
     .dataValid(dataValid),

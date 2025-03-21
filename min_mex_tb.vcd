@@ -1,5 +1,5 @@
 $date
-	Fri Mar 21 13:38:32 2025
+	Fri Mar 21 13:41:25 2025
 $end
 $version
 	Icarus Verilog
@@ -8,14 +8,14 @@ $timescale
 	1ps
 $end
 $scope module min_mex_tb $end
-$var event 1 ! _ivl_5 $end
+$var event 1 ! _ivl_0 $end
 $var wire 1 " outValid $end
-$var wire 6 # data_out [5:0] $end
+$var wire 5 # data_out [4:0] $end
 $var parameter 32 $ ADDR_WIDTH $end
 $var parameter 32 % DATA_WIDTH $end
 $var reg 3 & addr [2:0] $end
 $var reg 1 ' clk $end
-$var reg 6 ( data [5:0] $end
+$var reg 5 ( data [4:0] $end
 $var reg 1 ) dataValid $end
 $var reg 1 * read $end
 $var reg 1 + reset $end
@@ -23,7 +23,7 @@ $var reg 32 , seed [31:0] $end
 $scope module dut $end
 $var wire 3 - addr [2:0] $end
 $var wire 1 ' clk $end
-$var wire 6 . data [5:0] $end
+$var wire 5 . data [4:0] $end
 $var wire 1 ) dataValid $end
 $var wire 1 * read $end
 $var wire 1 + reset $end
@@ -42,106 +42,100 @@ $var wire 1 + reset $end
 $var wire 1 0 resetComplete $end
 $var wire 1 " outValid $end
 $var wire 1 1 dp_done $end
-$var parameter 32 5 ADDR_WIDTH $end
-$var parameter 32 6 DATA_WIDTH $end
-$var parameter 3 7 S_DONE $end
-$var parameter 3 8 S_IDLE $end
-$var parameter 3 9 S_READ $end
-$var parameter 3 : S_READ_INTERMEDIATE_1 $end
-$var parameter 3 ; S_READ_INTERMEDIATE_2 $end
-$var parameter 3 < S_RUN $end
-$var parameter 35 = depth $end
-$var reg 3 > nxt_state [2:0] $end
-$var reg 3 ? state [2:0] $end
+$var parameter 3 5 S_DONE $end
+$var parameter 3 6 S_IDLE $end
+$var parameter 3 7 S_READ $end
+$var parameter 3 8 S_READ_INTERMEDIATE_1 $end
+$var parameter 3 9 S_READ_INTERMEDIATE_2 $end
+$var parameter 3 : S_RUN $end
+$var reg 3 ; nxt_state [2:0] $end
+$var reg 3 < state [2:0] $end
 $upscope $end
 $scope module datapath_unit $end
-$var wire 3 @ addr [2:0] $end
+$var wire 3 = addr [2:0] $end
 $var wire 1 ' clk $end
-$var wire 6 A data_in [5:0] $end
-$var wire 6 B mem_data [5:0] $end
+$var wire 5 > data_in [4:0] $end
+$var wire 5 ? mem_data [4:0] $end
 $var wire 1 + reset $end
-$var wire 3 C state [2:0] $end
-$var wire 6 D data_out [5:0] $end
-$var parameter 32 E ADDR_WIDTH $end
-$var parameter 32 F DATA_WIDTH $end
-$var parameter 3 G S_DONE $end
-$var parameter 3 H S_IDLE $end
-$var parameter 3 I S_READ $end
-$var parameter 3 J S_READ_INTERMEDIATE_1 $end
-$var parameter 3 K S_READ_INTERMEDIATE_2 $end
-$var parameter 3 L S_RUN $end
-$var parameter 35 M depth $end
+$var wire 3 @ state [2:0] $end
+$var wire 5 A data_out [4:0] $end
+$var parameter 32 B ADDR_WIDTH $end
+$var parameter 32 C DATA_WIDTH $end
+$var parameter 3 D S_DONE $end
+$var parameter 3 E S_IDLE $end
+$var parameter 3 F S_READ $end
+$var parameter 3 G S_READ_INTERMEDIATE_1 $end
+$var parameter 3 H S_READ_INTERMEDIATE_2 $end
+$var parameter 3 I S_RUN $end
+$var parameter 35 J depth $end
 $var reg 1 1 dp_done $end
-$var reg 1 N re $end
-$var reg 6 O resetAddr [5:0] $end
+$var reg 1 K re $end
+$var reg 5 L resetAddr [4:0] $end
 $var reg 1 0 resetComplete $end
-$var reg 1 P resetting $end
-$var reg 1 Q we $end
+$var reg 1 M resetting $end
+$var reg 1 N we $end
 $scope module m $end
-$var wire 3 R addr [2:0] $end
+$var wire 3 O addr [2:0] $end
 $var wire 1 ' clk $end
-$var wire 6 S data [5:0] $end
-$var wire 1 N readEnable $end
-$var wire 1 Q writeEnable $end
-$var parameter 32 T ADDR_WIDTH $end
-$var parameter 32 U DATA_WIDTH $end
-$var reg 6 V temp_data [5:0] $end
+$var wire 5 P data [4:0] $end
+$var wire 1 K readEnable $end
+$var wire 1 N writeEnable $end
+$var parameter 32 Q ADDR_WIDTH $end
+$var parameter 32 R DATA_WIDTH $end
+$var reg 5 S temp_data [4:0] $end
 $upscope $end
 $upscope $end
 $upscope $end
 $scope begin $ivl_for_loop0 $end
-$var integer 32 W i [31:0] $end
+$var integer 32 T i [31:0] $end
 $upscope $end
 $scope begin $ivl_for_loop1 $end
-$var integer 32 X i [31:0] $end
+$var integer 32 U i [31:0] $end
 $upscope $end
 $upscope $end
 $enddefinitions $end
 $comment Show the parameter values. $end
 $dumpall
-b110 U
-b11 T
-b1000 M
-b100 L
-b11 K
-b10 J
-b1 I
-b0 H
-b101 G
-b110 F
-b11 E
-b1000 =
-b100 <
-b11 ;
-b10 :
-b1 9
-b0 8
-b101 7
-b110 6
-b11 5
-b110 4
+b101 R
+b11 Q
+b1000 J
+b100 I
+b11 H
+b10 G
+b1 F
+b0 E
+b101 D
+b101 C
+b11 B
+b100 :
+b11 9
+b10 8
+b1 7
+b0 6
+b101 5
+b101 4
 b11 3
-b110 %
+b101 %
 b11 $
 $end
 #0
 $dumpvars
-bx X
-bx W
-bx V
+bx U
+bx T
 bx S
-b0 R
-xQ
-xP
-bx O
+bx P
+b0 O
 xN
-bx D
-bx C
-bx B
-b0 A
-b0 @
+xM
+bx L
+xK
+bx A
+bx @
 bx ?
 b0 >
+b0 =
+bx <
+b0 ;
 bx 2
 x1
 10
@@ -155,357 +149,357 @@ b1011 ,
 b0 (
 0'
 b0 &
-b0xxxxx #
+bx #
 x"
 1!
 $end
 #5000
 0"
-b1 >
+b1 ;
 b0 /
-b0 ?
-b0 C
+b0 <
+b0 @
 1'
 #10000
 0'
-b0 W
+b0 T
 1*
 1)
 #15000
-b10 >
+b10 ;
 b1 /
-b1 ?
-b1 C
-b0zzzzz #
+b1 <
+b1 @
+b0 ?
+b0 P
+bz #
 bz 2
-b0 B
-b0 S
-bz D
-1Q
-0N
+bz A
+1N
+0K
 1'
 #20000
 0'
 b10111001011111010000 ,
 #25000
-b11 >
+b11 ;
 b10 /
-b10 ?
-b10 C
+b10 <
+b10 @
 1'
-b1 W
+b1 T
 1*
 #30000
 0'
 #35000
-b1 >
+b1 ;
 b11 /
-b11 ?
-b11 C
-b1111 B
-b1111 S
+b11 <
+b11 @
+b1111 ?
+b1111 P
 1'
 b1111 (
 b1111 .
-b1111 A
+b1111 >
 b110111110011100010000110010001 ,
 b1 &
 b1 -
-b1 @
-b1 R
+b1 =
+b1 O
 #40000
 0'
-b10 W
+b10 T
 1*
 #45000
-b10 >
+b10 ;
 b1 /
-b1 ?
-b1 C
+b1 <
+b1 @
 1'
 #50000
-b10010 B
-b10010 S
+b10010 ?
+b10010 P
 0'
 b10010 (
 b10010 .
-b10010 A
+b10010 >
 b1001001010101100011111000011110 ,
 b10 &
 b10 -
-b10 @
-b10 R
+b10 =
+b10 O
 #55000
-b11 >
+b11 ;
 b10 /
-b10 ?
-b10 C
+b10 <
+b10 @
 1'
-b11 W
+b11 T
 1*
 #60000
 0'
 #65000
-b1 >
+b1 ;
 b11 /
-b11 ?
-b11 C
+b11 <
+b11 @
 1'
 b1011001010101010100010000000111 ,
 b11 &
 b11 -
-b11 @
-b11 R
+b11 =
+b11 O
 #70000
 0'
-b100 W
+b100 T
 1*
 #75000
-b10 >
+b10 ;
 b1 /
-b1 ?
-b1 C
+b1 <
+b1 @
 1'
 #80000
-b11 B
-b11 S
+b11 ?
+b11 P
 0'
 b11 (
 b11 .
-b11 A
+b11 >
 b100001110000101101010010011100 ,
 b100 &
 b100 -
-b100 @
-b100 R
+b100 =
+b100 O
 #85000
-b11 >
+b11 ;
 b10 /
-b10 ?
-b10 C
+b10 <
+b10 @
 1'
-b101 W
+b101 T
 1*
 #90000
 0'
 #95000
-b1 >
+b1 ;
 b11 /
-b11 ?
-b11 C
-b100 B
-b100 S
+b11 <
+b11 @
+b100 ?
+b100 P
 1'
 b100 (
 b100 .
-b100 A
+b100 >
 b11000010011011000010110011101101 ,
 b101 &
 b101 -
-b101 @
-b101 R
+b101 =
+b101 O
 #100000
 0'
-b110 W
+b110 T
 1*
 #105000
-b10 >
+b10 ;
 b1 /
-b1 ?
-b1 C
+b1 <
+b1 @
 1'
 #110000
-b10111 B
-b10111 S
+b10111 ?
+b10111 P
 0'
 b10111 (
 b10111 .
-b10111 A
+b10111 >
 b1011011110101010000001011001010 ,
 b110 &
 b110 -
-b110 @
-b110 R
+b110 =
+b110 O
 #115000
-b11 >
+b11 ;
 b10 /
-b10 ?
-b10 C
+b10 <
+b10 @
 1'
-b111 W
+b111 T
 1*
 #120000
 0'
 #125000
-b1 >
+b1 ;
 b11 /
-b11 ?
-b11 C
-b11011 B
-b11011 S
+b11 <
+b11 @
+b11011 ?
+b11011 P
 1'
 b11011 (
 b11011 .
-b11011 A
+b11011 >
 b1011101100000010111110111000011 ,
 b111 &
 b111 -
-b111 @
-b111 R
+b111 =
+b111 O
 #130000
-b100 >
+b100 ;
 0'
 0)
-b1000 W
+b1000 T
 0*
 #135000
 b100 /
-b100 ?
-b100 C
+b100 <
+b100 @
 1'
 #140000
 0'
 b10 &
 b10 -
-b10 @
-b10 R
+b10 =
+b10 O
 #145000
-b10010 V
+b10010 S
+b10010 ?
+b10010 P
 b10010 #
 b10010 2
-b10010 B
-b10010 S
-b10010 D
-b101 >
+b10010 A
+b101 ;
 11
-0Q
-1N
+0N
+1K
 1'
 #150000
 0'
 #155000
 1"
 b101 /
-b101 ?
-b101 C
+b101 <
+b101 @
 1'
 #160000
 0'
 b0 &
 b0 -
-b0 @
-b0 R
-b0 X
+b0 =
+b0 O
+b0 U
 #165000
 b0 #
 b0 2
-b0 D
-b0 B
+b0 A
+b0 ?
+b0 P
 b0 S
-b0 V
 1'
 #170000
 0'
 b1 &
 b1 -
-b1 @
-b1 R
-b1 X
+b1 =
+b1 O
+b1 U
 #175000
 b1111 #
 b1111 2
-b1111 D
-b1111 B
+b1111 A
+b1111 ?
+b1111 P
 b1111 S
-b1111 V
 1'
 #180000
 0'
 b10 &
 b10 -
-b10 @
-b10 R
-b10 X
+b10 =
+b10 O
+b10 U
 #185000
 b10010 #
 b10010 2
-b10010 D
-b10010 B
+b10010 A
+b10010 ?
+b10010 P
 b10010 S
-b10010 V
 1'
 #190000
 0'
 b11 &
 b11 -
-b11 @
-b11 R
-b11 X
+b11 =
+b11 O
+b11 U
 #195000
 1'
 #200000
 0'
 b100 &
 b100 -
-b100 @
-b100 R
-b100 X
+b100 =
+b100 O
+b100 U
 #205000
 b11 #
 b11 2
-b11 D
-b11 B
+b11 A
+b11 ?
+b11 P
 b11 S
-b11 V
 1'
 #210000
 0'
 b101 &
 b101 -
-b101 @
-b101 R
-b101 X
+b101 =
+b101 O
+b101 U
 #215000
 b100 #
 b100 2
-b100 D
-b100 B
+b100 A
+b100 ?
+b100 P
 b100 S
-b100 V
 1'
 #220000
 0'
 b110 &
 b110 -
-b110 @
-b110 R
-b110 X
+b110 =
+b110 O
+b110 U
 #225000
 b10111 #
 b10111 2
-b10111 D
-b10111 B
+b10111 A
+b10111 ?
+b10111 P
 b10111 S
-b10111 V
 1'
 #230000
 0'
 b111 &
 b111 -
-b111 @
-b111 R
-b111 X
+b111 =
+b111 O
+b111 U
 #235000
 b11011 #
 b11011 2
-b11011 D
-b11011 B
+b11011 A
+b11011 ?
+b11011 P
 b11011 S
-b11011 V
 1'
 #240000
 0'
-b1000 X
+b1000 U
 #245000
 1'
 #250000
