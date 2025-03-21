@@ -1,0 +1,41 @@
+module min_mex
+#(
+     parameter ADDR_WIDTH = 4,
+    parameter DATA_WIDTH = 5
+)
+(
+    input wire clk,
+    input wire reset,
+    input wire dataValid,
+    input wire read,
+    input wire [ADDR_WIDTH-1:0] addr,
+    input wire [DATA_WIDTH-1:0] data,
+    output wire outValid,
+    output wire[DATA_WIDTH-1] data_out
+);
+wire [2:0] state;
+wire dp_done;
+wire resetComplete;
+min_mex_ctrl control_unit (
+    .clk(clk),
+    .reset(reset),
+    .dataValid(dataValid),
+    .read(read),
+    .resetComplete(resetComplete),
+    .dp_done(dp_done),
+    .outValid(outValid),
+    .state(state)
+);
+
+min_mex_dp datapath_unit (
+    .clk(clk),
+    .reset(reset),
+    .state(state),
+    .addr(addr),
+    .data_in(data),
+    .resetComplete(resetComplete),
+    .dp_done(dp_done),
+    .data_out(data_out)
+);
+
+endmodule

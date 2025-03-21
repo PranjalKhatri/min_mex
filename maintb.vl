@@ -1,78 +1,68 @@
 `timescale 1ns/1ps
 
-module min_mex_tb();
-
-    // Parameters
-    localparam ADDR_WIDTH = 4;
-    localparam DATA_WIDTH = 5;
-    localparam depth = 1 << ADDR_WIDTH;
-
-    // Testbench Signals
-    reg clk, reset, dataValid, read;
-    wire outValid;
+module min_mex_tb;
+    parameter ADDR_WIDTH = 4;
+    parameter DATA_WIDTH = 5;
+    
+    reg clk;
+    reg reset;
+    reg dataValid;
+    reg read;
     reg [ADDR_WIDTH-1:0] addr;
-    reg [DATA_WIDTH-1:0] data_in;
-    wire [DATA_WIDTH-1:0] data;
-    wire resetDone;
-    // Clock Generation (10ns period)
-    always #5 clk = ~clk;
-
-    // Bidirectional data handling
-    assign data = dataValid ? data_in : 'hz;
-
-    // DUT Instantiation
-    min_mex #(
-        .ADDR_WIDTH(ADDR_WIDTH),
-        .DATA_WIDTH(DATA_WIDTH)
-    ) dut (
+    reg [DATA_WIDTH-1:0] data;
+    
+    wire outValid;
+    wire [DATA_WIDTH-1:0] data_out;
+    
+    // Instantiate the min_mex module
+    min_mex #(.ADDR_WIDTH(ADDR_WIDTH), .DATA_WIDTH(DATA_WIDTH)) dut (
         .clk(clk),
         .reset(reset),
         .dataValid(dataValid),
-        .outValid(outValid),
         .read(read),
         .addr(addr),
         .data(data),
-        .resetDone(resetDone)
+        .outValid(outValid),
+        .data_out(data_out)
     );
-
-    integer i;
-
+    always @(*) begin
+        $monitor("TIME: %0t | clk: %b | reset: %b | dataValid: %b | read: %b | addr: %b | data: %b | outValid: %b | data_out: %b", 
+                 $time, clk, reset, dataValid, read, addr, data, outValid, data_out);
+    end
+    // Clock generation
+    always #5 clk = ~clk;
+    
     initial begin
         // Initialize signals
         clk = 0;
-        reset = 1;
-        dataValid = 1;
-        read = 1;
+        reset = 0;
+        dataValid = 0;
+        read = 0;
         addr = 0;
-        data_in = 0;
-
-        // Monitor outputs
-        $monitor("Time: %0t | State: %b | re : %b | we : %b | Addr: %d | Data: %d | Read: %b | DataValid: %b | OutValid: %b", 
-                 $time, dut.state,dut.readEnable,dut.writeEnable, addr, data, read, dataValid, outValid);
-
-        // Apply Reset
-         reset = 0;
-        #10 while (resetDone) begin
-            #10;
+        data = 0;
+        
+        #10 reset = 0; // Deassert reset
+        while (!dut.resetComplete) begin
+            
         end
-         dataValid = 1;
-        // Write random values to all memory locations
-        for (i = 0; i < depth; i = i + 1) begin
-            #10 addr = i;
-                data_in = $random % 32;
-                read = 1;
-        #10 read=0;
-        end
-
-        // Read back values from memory
-        for (i = 0; i < depth; i = i + 1) begin
-            #10 addr = i;
-                read = 0;
-                dataValid = 0;
-            #10 read = 0;
-        end
-
-        #20 $finish;
+        // Write data to memory
+        #10 dataValid = 1;read=1; addr = 4'b0010; data = 5'b10101;
+        #10 dataValid = 0;read = 0;
+        
+        // Read data back
+        #10  addr = 4'b0010;
+        // Wait for output to become valid
+        #20;
+        
+        // Display results
+        $display("Data at address %b: %b", addr, data_out);
+        
+        // End simulation
+        #30 $finish;
     end
-
+    
+    initial begin
+        $dumpfile("min_mex_tb.vcd");
+        $dumpvars(0, min_mex_tb);
+    end
 endmodule
