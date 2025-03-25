@@ -54,15 +54,86 @@ module min_mex_tb;
         $display("Writing data to memory...");
         dataValid = 1; read = 1;
         // for (integer i = 0; i < (1 << ADDR_WIDTH); i = i + 1) begin
-            read=1;
-            #10 addr = 0; data = $random(seed)&5'b11111; // Write (i + 1) to address i
+        read=1;
+        #10 addr = 0; data = $random(seed)&5'b11111; // Write (i + 1) to address i
             // #5 read=0;
-            $display("Data write at address %d with value %d",addr,data);
+        $display("Data write at address %d with value %d",addr,data);
         // end
         #10 read=0;
         #10 addr=1;data=$random(seed)&5'b111111;
         #10 read=1;
         $display("Data write at address %d with value %d",addr,data);
+
+        #10 read=0;
+        #10 addr=2;data=$random(seed)&5'b111111;
+        #10 read=1;
+        $display("Data write at address %d with value %d",addr,data);
+
+        #10 read=0;
+        #10 addr=3;data=$random(seed)&5'b111111;
+        #10 read=1;
+        $display("Data write at address %d with value %d",addr,data);
+
+        #10 read=0;
+        #10 addr=4;data=$random(seed)&5'b111111;
+        #10 read=1;
+        $display("Data write at address %d with value %d",addr,data);
+
+        #10 read=0;
+        #10 addr=5;data=$random(seed)&5'b111111;
+        #10 read=1;
+        $display("Data write at address %d with value %d",addr,data);
+
+        #10 read=0;
+        #10 addr=6;data=$random(seed)&5'b111111;
+        #10 read=1;
+        $display("Data write at address %d with value %d",addr,data);
+
+        #10 read=0;
+        #10 addr=7;data=$random(seed)&5'b111111;
+        #10 read=1;
+        $display("Data write at address %d with value %d",addr,data);
+
+        #10 read=0;
+        #10 addr=8;data=$random(seed)&5'b111111;
+        #10 read=1;
+        $display("Data write at address %d with value %d",addr,data);
+
+        #10 read=0;
+        #10 addr=9;data=$random(seed)&5'b111111;
+        #10 read=1;
+        $display("Data write at address %d with value %d",addr,data);
+
+        #10 read=0;
+        #10 addr=10;data=$random(seed)&5'b111111;
+        #10 read=1;
+        $display("Data write at address %d with value %d",addr,data);
+
+        #10 read=0;
+        #10 addr=11;data=$random(seed)&5'b111111;
+        #10 read=1;
+        $display("Data write at address %d with value %d",addr,data);
+
+        #10 read=0;
+        #10 addr=12;data=$random(seed)&5'b111111;
+        #10 read=1;
+        $display("Data write at address %d with value %d",addr,data);
+
+        #10 read=0;
+        #10 addr=13;data=$random(seed)&5'b111111;
+        #10 read=1;
+        $display("Data write at address %d with value %d",addr,data);
+
+        #10 read=0;
+        #10 addr=14;data=$random(seed)&5'b111111;
+        #10 read=1;
+        $display("Data write at address %d with value %d",addr,data);
+
+        #10 read=0;
+        #10 addr=15;data=$random(seed)&5'b111111;
+        #10 read=1;
+        $display("Data write at address %d with value %d",addr,data);
+
 
         dataValid = 0; 
         #100 read = 0; // Deassert dataValid
