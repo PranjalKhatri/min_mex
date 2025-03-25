@@ -10,14 +10,14 @@ module min_mex_ctrl
     output reg [3:0] state//the state
 );
 
-localparam S_IDLE             = 3'b000;
-localparam S_READ             = 3'b001;
-localparam S_READ_INTERMEDIATE_1 = 3'b010;
-localparam S_READ_INTERMEDIATE_2 = 3'b011;
-localparam S_RUN              = 3'b100;
-localparam S_RUN_INTERMEDIATE_1 = 3'b101;
-localparam S_RUN_INTERMEDIATE_2 = 3'b110;
-localparam S_DONE            = 3'b111;
+localparam S_IDLE             = 4'b000;
+localparam S_READ             = 4'b001;
+localparam S_READ_INTERMEDIATE_1 = 4'b010;
+localparam S_READ_INTERMEDIATE_2 = 4'b011;
+localparam S_RUN              = 4'b100;
+localparam S_RUN_INTERMEDIATE_1 = 4'b101;
+localparam S_RUN_INTERMEDIATE_2 = 4'b110;
+localparam S_DONE            = 4'b111;
 
 reg [2:0] nxt_state;
 // reg resetting;
