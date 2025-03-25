@@ -52,10 +52,10 @@ module min_mex_tb;
         // #10 dataValid = 0;read = 0;
         #170
         $display("Writing data to memory...");
-        dataValid = 1; read = 1;
+        dataValid = 1; read = 0;
         // for (integer i = 0; i < (1 << ADDR_WIDTH); i = i + 1) begin
-        read=1;
         #10 addr = 0; data = $random(seed)&5'b11111; // Write (i + 1) to address i
+        read=1;
             // #5 read=0;
         $display("Data write at address %d with value %d",addr,data);
         // end

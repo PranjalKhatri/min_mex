@@ -1,5 +1,5 @@
 $date
-	Tue Mar 25 16:11:26 2025
+	Tue Mar 25 16:37:54 2025
 $end
 $version
 	Icarus Verilog
@@ -42,14 +42,14 @@ $var wire 1 + reset $end
 $var wire 1 0 resetComplete $end
 $var wire 1 " outValid $end
 $var wire 1 1 dp_done $end
-$var parameter 3 5 S_DONE $end
-$var parameter 3 6 S_IDLE $end
-$var parameter 3 7 S_READ $end
-$var parameter 3 8 S_READ_INTERMEDIATE_1 $end
-$var parameter 3 9 S_READ_INTERMEDIATE_2 $end
-$var parameter 3 : S_RUN $end
-$var parameter 3 ; S_RUN_INTERMEDIATE_1 $end
-$var parameter 3 < S_RUN_INTERMEDIATE_2 $end
+$var parameter 4 5 S_DONE $end
+$var parameter 4 6 S_IDLE $end
+$var parameter 4 7 S_READ $end
+$var parameter 4 8 S_READ_INTERMEDIATE_1 $end
+$var parameter 4 9 S_READ_INTERMEDIATE_2 $end
+$var parameter 4 : S_RUN $end
+$var parameter 4 ; S_RUN_INTERMEDIATE_1 $end
+$var parameter 4 < S_RUN_INTERMEDIATE_2 $end
 $var reg 3 = nxt_state [2:0] $end
 $var reg 4 > state [3:0] $end
 $upscope $end
@@ -774,38 +774,35 @@ b1 >
 b1 B
 1'
 #180000
-b10 =
 0'
-1*
 1)
 #185000
-b11 =
-b10 /
-b10 >
-b10 B
 1'
 #190000
 b101 A
 b101 d#
+b10 =
 b101 I
 0'
+1*
 b101 (
 b101 .
 b101 @
 b11010010110010111110111011110110 ,
 #195000
-b1 =
-b11 /
-b11 >
-b11 B
+b11 =
+b10 /
+b10 >
+b10 B
 1'
 #200000
 0'
 0*
 #205000
-b1 /
-b1 >
-b1 B
+b1 =
+b11 /
+b11 >
+b11 B
 1'
 #210000
 b1 F
@@ -822,6 +819,9 @@ b1 &
 b1 -
 b1 ?
 #215000
+b1 /
+b1 >
+b1 B
 1'
 #220000
 b10 =

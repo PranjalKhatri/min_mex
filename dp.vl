@@ -83,6 +83,7 @@ always @(posedge clk) begin
      if (reset) begin
         temp_addr <= 0;
         // resetComplete <= 0;
+        resetAddr<=0;
         resetting <= 1;
         we<=1;
         re<=0;
@@ -138,8 +139,8 @@ always @(posedge clk) begin
             re=1;
             we=0;
             dp_done=1;
-            // $display("max value: %d",mx);
-            // $display("min value: %d",mn);
+            $display("max value: %d",mx);
+            $display("min value: %d",mn);
         end
     endcase
 end
