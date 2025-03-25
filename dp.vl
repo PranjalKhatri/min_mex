@@ -43,7 +43,7 @@ initial begin
     temp_addr=0;
 end
 
-assign mem_addr = (reset || resetting) ? resetAddr : ((state == S_READ || state == S_READ_INTERMEDIATE_1 || state==S_READ_INTERMEDIATE_2) ? addr : temp_addr);
+assign mem_addr = (reset | resetting) ? resetAddr : ((state == S_RUN | state == S_RUN_INTERMEDIATE_1 | state==S_RUN_INTERMEDIATE_2) ? temp_addr : addr);
 
 mem #(
     .ADDR_WIDTH(ADDR_WIDTH),
@@ -78,6 +78,7 @@ initial begin
 end
 
 always @(posedge clk) begin
+    // $display("state %d reset %b resetting %b memaddr %d addr %d",state,reset,resetting,mem_addr,addr);
     // $display("data_out :%b , mem_data : %b ",data_out,mem_data);
      if (reset) begin
         temp_addr <= 0;
@@ -137,8 +138,8 @@ always @(posedge clk) begin
             re=1;
             we=0;
             dp_done=1;
-            $display("max value: %d",mx);
-            $display("min value: %d",mn);
+            // $display("max value: %d",mx);
+            // $display("min value: %d",mn);
         end
     endcase
 end

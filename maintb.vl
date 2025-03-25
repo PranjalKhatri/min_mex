@@ -151,6 +151,12 @@ module min_mex_tb;
         // $display("Data at address %b: %b", addr, data_out);
         
         // End simulation
+        #1000 $display("data at various locations:");
+        for (integer i = 0; i < (1 << ADDR_WIDTH); i = i + 1) begin
+             addr = i; // Read from address i
+            #20; // Wait for output to become valid
+            $display("Data at address %d: %d", addr, data_out);
+        end
         #480 $finish;
     end
     
