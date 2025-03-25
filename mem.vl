@@ -12,18 +12,18 @@ module mem
     input wire clk,//sequential memory ckt [posedge enabled]
     input wire readEnable,
     input wire writeEnable,
-    input [ADDR_WIDTH-1:0] addr,
+    input wire [ADDR_WIDTH-1:0] addr,
     inout [DATA_WIDTH-1:0] data
 );
 reg [DATA_WIDTH-1:0] memory [(1<<ADDR_WIDTH)-1:0];
 reg [DATA_WIDTH-1:0] temp_data;
 always @(posedge clk ) begin
     if(writeEnable) begin
-        // $display("memory write at %d with value %d",addr,data);
+        $display("memory write at %d with value %d",addr,data);
         memory[addr] <= data;
     end else if(readEnable)begin
       temp_data <= memory[addr];
-        // $display("memory read at %d of value %d",addr,temp_data);
+        // $display("memory read at %d of value %d",addr,memory[addr]);
     //   data
     end
 end

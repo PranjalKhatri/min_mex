@@ -7,7 +7,7 @@ module min_mex_ctrl
     input wire resetComplete,//dp completed reset\\
     input wire dp_done,
     output wire outValid,//output is valid showing
-    output reg [2:0] state//the state
+    output reg [3:0] state//the state
 );
 
 localparam S_IDLE             = 3'b000;
