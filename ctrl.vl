@@ -45,7 +45,7 @@ always @(posedge clk) begin
             end
         end
         S_READ: begin
-            nxt_state = read ?  S_READ_INTERMEDIATE_1 : S_READ;
+            nxt_state = dataValid ? (read ?  S_READ_INTERMEDIATE_1 : S_READ) : S_RUN_PRE;
         end
         S_READ_INTERMEDIATE_1: begin
             nxt_state = S_READ_INTERMEDIATE_2;

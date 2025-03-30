@@ -34,7 +34,7 @@ module min_mex_tb;
     reg [31:0] seed;
 
     initial begin
-        seed = 69696969;
+        seed = 19856547;
         // Initialize signals
         clk = 0;
         reset = 0;
@@ -157,6 +157,7 @@ module min_mex_tb;
             #20; // Wait for output to become valid
             $display("Data at address %d: %d", addr, data_out);
         end
+        $display("min %d, max %d",dut.mn,dut.mx);
         #480 $finish;
     end
     
