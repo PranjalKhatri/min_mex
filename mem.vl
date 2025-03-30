@@ -23,9 +23,9 @@ always @(posedge clk ) begin
         memory[addr] <= data;
     end else if(readEnable)begin
       temp_data <= memory[addr];
-        // $display("memory read at %d of value %d",addr,memory[addr]);
     //   data
     end
+        $display("memory read at %d of value %d",addr,memory[addr]);
 end
 assign data = (readEnable && !writeEnable) ? temp_data : 'hz;
 // assign data = readEnable ? temp_data : {DATA_WIDTH{1'bz}};//assign int max ig

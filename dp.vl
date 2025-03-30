@@ -31,7 +31,7 @@ localparam S_RUN_INTERMEDIATE_2 = 4'b0111;
 localparam S_DONE            = 4'b1000;
 
 reg re,we;
-
+reg loop2;
 //temp
 assign rew =re;
 assign wew = we;
@@ -43,7 +43,7 @@ reg resetting;
 wire [DATA_WIDTH-1:0] data_mem;
 
 assign data_mem = (reset || resetting) ? 0 : data_in;
-assign mem_data = (!re & we) ? ((reset || resetting) ? {1'b0, 1'b0} : {1'b1, data_mem}) : 'hz;
+assign mem_data = (!re & we) ? ((reset || resetting) ? {1'b0, 5'b0} : {1'b1, data_mem}) : 'hz;
 
 //assign data_out = (re & !we) ? mem_data : ~0;
 //assign resetComplete = (reset || resetting) ? 0 : 1;
@@ -118,6 +118,7 @@ end
 
 always @(posedge clk) begin
  if (reset) begin
+       loop2<=0;
        temp_addr <= 0;
 //         resetComplete <= 0;
        dp_done <= 0;
@@ -157,9 +158,12 @@ always @(posedge clk) begin
             to run state the write is on and the address swithces immidiately to temp_addr which is 0 initially so the mem[0] is overwritten with mem[last]}*/
         end
         S_RUN: begin
-            
+            $display("memaddr %d, tempaddr %d, memdata %d",mem_addr,temp_addr,mem_data);
+            re<=1;
+            we<=0;
         end
         S_RUN_INTERMEDIATE_1 : begin
+            $display("memaddr %d, tempaddr %d, memdata %d",mem_addr,temp_addr,mem_data);
           if(mem_data&6'b100000)begin
             in1 <= mx;
             in3 <= mn;
@@ -169,12 +173,22 @@ always @(posedge clk) begin
           we<=0;
         end
         S_RUN_INTERMEDIATE_2 : begin
+            $display("memaddr %d, tempaddr %d, memdata %d",mem_addr,temp_addr,mem_data);
+            re<=1;
+            we<=0;
             mx <= gre;
             mn <= sm;
           if(temp_addr == (1<<ADDR_WIDTH)-1)begin
+                if(loop2)begin 
             dp_done<=1;
+                end else begin
+                    temp_addr<=1;
+                    loop2<=1;
+                 end
           end else begin 
-            temp_addr <= temp_addr+1;
+            $display("temp addr before %d ",temp_addr);
+            temp_addr = temp_addr+1;
+            $display("temp addr after %d ",temp_addr);
           end
         end
         S_DONE: begin

@@ -130,7 +130,8 @@ module min_mex_tb;
         $display("Data write at address %d with value %d",addr,data);
 
         #10 read=0;
-        #10 addr=15;data=$random(seed)&5'b111111;
+        // #10 addr=15;data=$random(seed)&5'b111111;
+        #10 addr=15;data=31;
         #10 read=1;
         $display("Data write at address %d with value %d",addr,data);
 
@@ -154,9 +155,10 @@ module min_mex_tb;
         #1000 $display("data at various locations:");
         for (integer i = 0; i < (1 << ADDR_WIDTH); i = i + 1) begin
              addr = i; // Read from address i
-            #20; // Wait for output to become valid
+            #10; // Wait for output to become valid
             $display("Data at address %d: %d", addr, data_out);
         end
+        #100
         $display("min %d, max %d",dut.mn,dut.mx);
         #480 $finish;
     end
