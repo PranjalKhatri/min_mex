@@ -14,10 +14,11 @@ localparam S_IDLE             = 4'b0000;
 localparam S_READ             = 4'b0001;
 localparam S_READ_INTERMEDIATE_1 = 4'b0010;
 localparam S_READ_INTERMEDIATE_2 = 4'b0011;
-localparam S_RUN              = 4'b0100;
-localparam S_RUN_INTERMEDIATE_1 = 4'b0101;
-localparam S_RUN_INTERMEDIATE_2 = 4'b0110;
-localparam S_DONE            = 4'b0111;
+localparam S_RUN_PRE = 4'b0100;
+localparam S_RUN              = 4'b0101;
+localparam S_RUN_INTERMEDIATE_1 = 4'b0110;
+localparam S_RUN_INTERMEDIATE_2 = 4'b0111;
+localparam S_DONE            = 4'b1000;
 
 reg [3:0] nxt_state;
 // reg resetting;
@@ -50,7 +51,10 @@ always @(posedge clk) begin
             nxt_state = S_READ_INTERMEDIATE_2;
         end
         S_READ_INTERMEDIATE_2: begin
-            nxt_state = dataValid ? S_READ : S_RUN;
+            nxt_state = dataValid ? S_READ : S_RUN_PRE;
+        end
+        S_RUN_PRE: begin
+            nxt_state = S_RUN;
         end
         S_RUN: begin
              if (dp_done)
