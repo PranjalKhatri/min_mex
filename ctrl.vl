@@ -10,18 +10,20 @@ module min_mex_ctrl
     output reg [3:0] state//the state
 );
 
-localparam S_IDLE             = 4'b000;
-localparam S_READ             = 4'b001;
-localparam S_READ_INTERMEDIATE_1 = 4'b010;
-localparam S_READ_INTERMEDIATE_2 = 4'b011;
-localparam S_RUN              = 4'b100;
-localparam S_RUN_INTERMEDIATE_1 = 4'b101;
-localparam S_RUN_INTERMEDIATE_2 = 4'b110;
-localparam S_DONE            = 4'b111;
+localparam S_IDLE             = 4'b0000;
+localparam S_READ             = 4'b0001;
+localparam S_READ_INTERMEDIATE_1 = 4'b0010;
+localparam S_READ_INTERMEDIATE_2 = 4'b0011;
+localparam S_RUN              = 4'b0100;
+localparam S_RUN_INTERMEDIATE_1 = 4'b0101;
+localparam S_RUN_INTERMEDIATE_2 = 4'b0110;
+localparam S_DONE            = 4'b0111;
 
-reg [2:0] nxt_state;
+reg [3:0] nxt_state;
 // reg resetting;
-
+//initial begin
+//state = S_IDLE;
+//end
 
 always @(posedge clk or posedge reset) begin
     if (reset) begin
@@ -31,16 +33,15 @@ always @(posedge clk or posedge reset) begin
     end
 end
 
-always @(*) begin
+always @(posedge clk) begin
     // $display("state : %b",state);
     case (state)
         S_IDLE: begin
-            if (resetComplete && !reset)
+            if (resetComplete && !reset && dataValid)
                 nxt_state = S_READ;
-            else if (dataValid && resetComplete && !reset)
-                nxt_state = S_READ;
-            else
+            else begin
                 nxt_state = S_IDLE;
+            end
         end
         S_READ: begin
             nxt_state = read ?  S_READ_INTERMEDIATE_1 : S_READ;

@@ -1,73 +1,107 @@
-module seven_segment_display (
-    input wire clk,          // Clock signal
-    input wire rst,          // Reset signal
-    input wire [4:0] num,    // 5-bit binary number to display
-    output reg [6:0] seg,    // 7-segment display segments (a-g)
-    output reg [7:0] an      // Anode signals for 8 displays
+module seven_segment_display(
+    input wire clk,              // 100 MHz clock from Nexys A7
+    input wire reset,            // Reset button
+    input wire [4:0] number1,    // First 5-bit input number (0-31)
+    input wire [4:0] number2,    // Second 5-bit input number (0-31)
+    output reg [7:0] an,         // Anode signals for 8 displays
+    output reg [6:0] a_to_g      // Cathode signals for segments a-g
 );
 
-    reg [3:0] tens;          // Tens digit (0-3)
-    reg [3:0] units;         // Units digit (0-9)
-    reg [3:0] display_num;   // Number to display on the current segment
-    reg [2:0] display_select; // Select which display is active
-
-    // Split the 5-bit number into tens and units
-    always @(*) begin
-        if (num < 10) begin
-            tens = 4'b0000;  // No tens digit
-            units = num[3:0]; // Units digit is the number itself
-        end else if (num < 20) begin
-            tens = 4'b0001;  // Tens digit is 1
-            units = num - 10; // Units digit is num - 10
-        end else if (num < 30) begin
-            tens = 4'b0010;  // Tens digit is 2
-            units = num - 20; // Units digit is num - 20
+    // Corrected 7-segment display patterns (active low)
+    // Segments are ordered as: gfedcba
+localparam ZERO  = 7'b0000001;  // 0
+    localparam ONE   = 7'b1001111;  // 1
+    localparam TWO   = 7'b0010010;  // 2
+    localparam THREE = 7'b0000110;  // 3
+    localparam FOUR  = 7'b1001100;  // 4
+    localparam FIVE  = 7'b0100100;  // 5
+    localparam SIX   = 7'b0100000;  // 6
+    localparam SEVEN = 7'b0001111;  // 7
+    localparam EIGHT = 7'b0000000;  // 8
+    localparam NINE  = 7'b0000100;  // 9
+    localparam A     = 7'b0001000;  // A
+    localparam B     = 7'b1100000;  // b
+    localparam C     = 7'b0110001;  // C
+    localparam D     = 7'b1000010;  // d
+    localparam E     = 7'b0110000;  // E
+    localparam F     = 7'b0111000;  // F
+    
+    // For the 5-bit numbers (0-31), we need tens and ones digits
+    // Convert number1 to BCD
+    wire [3:0] number1_tens;
+    wire [3:0] number1_ones;
+    assign number1_tens = number1 / 10;  // Integer division gives tens digit
+    assign number1_ones = number1 % 10;  // Modulo gives ones digit
+    
+    // Convert number2 to BCD
+    wire [3:0] number2_tens;
+    wire [3:0] number2_ones;
+    assign number2_tens = number2 / 10;  // Integer division gives tens digit
+    assign number2_ones = number2 % 10;  // Modulo gives ones digit
+    
+    // Counter for time multiplexing
+    reg [19:0] refresh_counter = 0;
+    
+    // 3-bit counter to select which of the 8 displays is active
+    wire [2:0] display_select;
+    assign display_select = refresh_counter[19:17];  // Use the most significant bits
+    
+    // Clock divider for time multiplexing
+    always @(posedge clk or posedge reset) begin
+        if (reset) begin
+            refresh_counter <= 0;
         end else begin
-            tens = 4'b0011;  // Tens digit is 3
-            units = num - 30; // Units digit is num - 30
+            refresh_counter <= refresh_counter + 1;
         end
     end
-
-    // 7-segment encoding for digits 0-9
+    
+    // Anode control - select which display is active (active low)
     always @(*) begin
-        case (display_num)
-            4'b0000: seg = 7'b1000000; // 0
-            4'b0001: seg = 7'b1111001; // 1
-            4'b0010: seg = 7'b0100100; // 2
-            4'b0011: seg = 7'b0110000; // 3
-            4'b0100: seg = 7'b0011001; // 4
-            4'b0101: seg = 7'b0010010; // 5
-            4'b0110: seg = 7'b0000010; // 6
-            4'b0111: seg = 7'b1111000; // 7
-            4'b1000: seg = 7'b0000000; // 8
-            4'b1009: seg = 7'b0010000; // 9
-            default: seg = 7'b1111111; // Blank (all segments off)
+        case (display_select)
+            3'b000: an = 8'b11111110;  // Rightmost display (number2 ones)
+            3'b001: an = 8'b11111101;  // Second from right (number2 tens)
+            3'b010: an = 8'b11111011;  // Third from right (unused, display 0)
+            3'b011: an = 8'b11110111;  // Fourth from right (unused, display 0)
+            3'b100: an = 8'b01111111;  // Fifth from right (unused, display 0)
+            3'b101: an = 8'b10111111;  // Sixth from right (unused, display 0)
+            3'b110: an = 8'b11011111;  // Second from left (number1 tens)
+            3'b111: an = 8'b11101111;  // Leftmost display (number1 ones)
+            default: an = 8'b11111111;  // All displays off
         endcase
     end
-
-    // Anode control (assuming 8 displays)
-    always @(posedge clk or posedge rst) begin
-        if (rst) begin
-            display_select <= 3'b000;
-            an <= 8'b11111111; // Turn off all displays initially
-        end else begin
-            display_select <= display_select + 1;
-            an <= 8'b11111111; // Turn off all displays
-
-            case (display_select)
-                3'b000: begin
-                    display_num = tens; // Display tens digit
-                    an[0] = 1'b0;      // Turn on the first display
-                end
-                3'b001: begin
-                    display_num = units; // Display units digit
-                    an[1] = 1'b0;       // Turn on the second display
-                end
-                default: begin
-                    display_num = 4'b1111; // Blank
-                end
-            endcase
-        end
+    
+    // Digit to display based on currently active display
+    reg [3:0] digit_to_display;
+    
+    always @(*) begin
+        case (display_select)
+            3'b000: digit_to_display = number2_ones;     // Rightmost display
+            3'b001: digit_to_display = number2_tens;     // Second from right
+            3'b010: digit_to_display = 0;                // Third from right (display 0)
+            3'b011: digit_to_display = 0;                // Fourth from right (display 0)
+            3'b100: digit_to_display = 0;                // Fifth from right (display 0)
+            3'b101: digit_to_display = 0;                // Sixth from right (display 0)
+            3'b110: digit_to_display = number1_tens;     // Second from left
+            3'b111: digit_to_display = number1_ones;     // Leftmost display
+            default: digit_to_display = 0;
+        endcase
+    end
+    
+    // Convert digit to 7-segment display pattern
+    always @(*) begin
+        case (digit_to_display)
+            4'd0: a_to_g = ZERO;
+            4'd1: a_to_g = ONE;
+            4'd2: a_to_g = TWO;
+            4'd3: a_to_g = THREE;
+            4'd4: a_to_g = FOUR;
+            4'd5: a_to_g = FIVE;
+            4'd6: a_to_g = SIX;
+            4'd7: a_to_g = SEVEN;
+            4'd8: a_to_g = EIGHT;
+            4'd9: a_to_g = NINE;
+            default: a_to_g = ZERO;
+        endcase
     end
 
 endmodule
