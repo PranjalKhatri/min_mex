@@ -160,15 +160,15 @@ module min_mex_tb;
         end
         #100
         $display("min %d, max %d",dut.mn,dut.mx);
-        data=0;
-        addr=0;
+        data=15;
+        addr=1;
         #10 reset=1;
         #20 reset=0;
-         #170
+         #200
         $display("Writing data to memory...");
         dataValid = 1; read = 0;
         // for (integer i = 0; i < (1 << ADDR_WIDTH); i = i + 1) begin
-        #10 addr = 0; data = $random(seed)&5'b11111; // Write (i + 1) to address i
+        #10 addr = 2; data = $random(seed)&5'b11111; // Write (i + 1) to address i
         read=1;
          $display("Data write at address %d with value %d",addr,data);
         // end

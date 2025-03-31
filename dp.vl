@@ -127,6 +127,7 @@ always @(posedge clk) begin
        we<=1;
        re<=0;
        mn <= ~0;
+        // in1 <=
        mx <= 0;
    end else if (resetting) begin
        $display("reset at address %d",resetAddr);
@@ -178,6 +179,9 @@ always @(posedge clk) begin
             we<=0;
             mx <= gre;
             mn <= sm;
+            $display("gre %d sm %d in1 %d in2 %d in3 %d",gre,sm,in1,in2,in3);
+           $display("max value: %d",mx);
+           $display("min value: %d",mn);
           if(temp_addr == (1<<ADDR_WIDTH)-1)begin
                 if(loop2)begin 
             dp_done<=1;
