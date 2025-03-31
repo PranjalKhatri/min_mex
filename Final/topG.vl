@@ -30,6 +30,8 @@ wire [ADDR_WIDTH-1:0] mem_addr;
 wire re,we;
 wire [DATA_WIDTH:0] mem_data;
 
+wire greflag,lesflag;
+
 controller control_unit (
     .clk(clk),
     .reset(reset),
@@ -47,6 +49,8 @@ controller control_unit (
     .outValid(outValid),
     .comp_gre(comp_gre),
     .comp_les(comp_les),
+    .greflag(greflag),
+    .lesflag(lesflag),
     .in1(in1),
     .in2(in2),
     .in3(in3),
@@ -67,6 +71,8 @@ datapath_unit (
     .comp_gre_in2(in2),
     .comp_les_in1(in3),
     .comp_les_in2(in4),
+    .greflag(greflag),
+    .lesflag(lesflag),
     .comp_gre(comp_gre),
     .comp_les(comp_les),
     .data_out(actual_mem_data),

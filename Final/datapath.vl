@@ -15,7 +15,9 @@ module datapath
     input wire we,
     output wire[DATA_WIDTH-1:0] comp_gre,
     output wire[DATA_WIDTH-1:0] comp_les,
-    output wire[DATA_WIDTH: 0] data_out
+    output wire[DATA_WIDTH: 0] data_out,
+    output wire greflag,
+    output wire lesflag
 
 );
 wire[DATA_WIDTH:0] actual_mem_data;
@@ -50,4 +52,8 @@ comparator cmp_2(
     .greater(tmp_2),
     .smaller(comp_les)
 );
+
+xor greflag_xor(greflag,comp_gre,comp_gre_in1);
+xor lesflag_xor(lesflag,comp_les,comp_les_in1);
+
 endmodule

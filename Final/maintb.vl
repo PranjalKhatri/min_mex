@@ -34,7 +34,7 @@ module min_mex_tb;
     reg [31:0] seed;
 
     initial begin
-        seed = 69696969;
+        seed = 59697989;
         // Initialize signals
         clk = 0;
         reset = 0;
@@ -131,7 +131,7 @@ module min_mex_tb;
 
         #10 read=0;
         // #10 addr=15;data=$random(seed)&5'b111111;
-        #10 addr=15;data=31;
+        #10 addr=15;data=$random(seed)&5'b111111;
         #10 read=1;
         $display("Data write at address %d with value %d",addr,data);
 
