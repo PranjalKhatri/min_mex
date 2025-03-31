@@ -1,4 +1,4 @@
-module min_mex_ctrl
+module controller
 (
     input wire clk,//clk
     input wire reset,//reset signal
@@ -19,9 +19,7 @@ localparam S_RUN_INTERMEDIATE_1 = 4'b101;
 localparam S_RUN_INTERMEDIATE_2 = 4'b110;
 localparam S_DONE            = 4'b111;
 
-reg [2:0] nxt_state;
-// reg resetting;
-
+reg [2:0] next_state;
 
 always @(posedge clk or posedge reset) begin
     if (reset) begin
@@ -71,5 +69,4 @@ always @(*) begin
     endcase
 end
 assign outValid = (state == S_DONE) ? 1 : 0;
-
 endmodule
