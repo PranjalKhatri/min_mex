@@ -1,0 +1,53 @@
+module datapath 
+#(
+    parameter DATA_WIDTH = 5,
+    parameter ADDR_WIDTH = 4
+)
+(
+    input wire clk,
+    input wire[ADDR_WIDTH-1:0] mem_addr,
+    input wire[DATA_WIDTH:0] mem_data,//data includes dirty bit
+    input wire[DATA_WIDTH-1:0] comp_gre_in1,
+    input wire[DATA_WIDTH-1:0] comp_gre_in2,
+    input wire[DATA_WIDTH-1:0] comp_les_in1,
+    input wire[DATA_WIDTH-1:0] comp_les_in2,
+    input wire re,
+    input wire we,
+    output wire[DATA_WIDTH-1:0] comp_gre,
+    output wire[DATA_WIDTH-1:0] comp_les,
+    output wire[DATA_WIDTH: 0] data_out
+
+);
+wire[DATA_WIDTH:0] actual_mem_data;
+assign data_out = (re && !we) ? actual_mem_data : 0;
+assign actual_mem_data = (!re && we) ? mem_data : 'hz;
+always @(posedge clk) begin
+    // $display(" in1 %d in2 %d",comp_gre_in1,comp_gre_in2);
+    // $display("dp re %b we %b actual_mem_data %d",re,we,actual_mem_data);
+end
+mem #(
+    .ADDR_WIDTH(ADDR_WIDTH),
+    .DATA_WIDTH(DATA_WIDTH+1)//i do +1 for dirty bit :)
+) m (
+    .clk(clk),
+    .readEnable(re),
+    .writeEnable(we),
+    .addr(mem_addr),
+    .data(actual_mem_data),
+    .dirty(dirty)
+);
+
+wire [DATA_WIDTH-1:0] tmp_1,tmp_2;
+comparator cmp(
+    .A(comp_gre_in1),
+    .B(comp_gre_in2),
+    .greater(comp_gre),
+    .smaller(tmp_1)
+);
+comparator cmp_2(
+    .A(comp_les_in1),
+    .B(comp_les_in2),
+    .greater(tmp_2),
+    .smaller(comp_les)
+);
+endmodule

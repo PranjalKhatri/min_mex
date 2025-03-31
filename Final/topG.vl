@@ -1,0 +1,87 @@
+module topG_AndrewTate_orz
+#(
+     parameter ADDR_WIDTH = 4,
+    parameter DATA_WIDTH = 5
+)
+(
+    input wire clk,
+    input wire reset,
+    input wire dataValid,
+    input wire read,
+    output wire resetComplete,
+    input wire [ADDR_WIDTH-1:0] addr,
+    input wire [DATA_WIDTH-1:0] data,
+    output wire outValid,
+    output wire[DATA_WIDTH: 0] actual_mem_data,
+    output wire [7:0] an,
+    output wire[3:0] state,
+    output wire [6:0] a_to_g,
+    output wire dirty
+//    output wire[2:0] temp_addr
+);
+//wire [3:0] state;
+wire dp_done;
+//wire resetComplete;
+wire [DATA_WIDTH-1:0] mx,mn;
+wire [DATA_WIDTH-1:0] comp_gre,comp_les;
+wire [DATA_WIDTH-1:0] in1,in2,in3,in4;
+
+wire [ADDR_WIDTH-1:0] mem_addr;
+wire re,we;
+wire [DATA_WIDTH:0] mem_data;
+
+controller control_unit (
+    .clk(clk),
+    .reset(reset),
+    .addr(addr),
+    .data_in(data),
+    .resetComplete(resetComplete),
+    .mem_addr(mem_addr),
+    .mem_data(mem_data),
+    .re(re),
+    .we(we),
+    .mx(mx),
+    .mn(mn),
+    .dataValid(dataValid),
+    .read(read),
+    .outValid(outValid),
+    .comp_gre(comp_gre),
+    .comp_les(comp_les),
+    .in1(in1),
+    .in2(in2),
+    .in3(in3),
+    .in4(in4),
+    .actual_mem_data(actual_mem_data)
+);
+
+datapath 
+#(
+    .ADDR_WIDTH(ADDR_WIDTH),
+    .DATA_WIDTH(DATA_WIDTH)
+)
+datapath_unit (
+    .clk(clk),
+    .mem_addr(mem_addr),
+    .mem_data(mem_data),
+    .comp_gre_in1(in1),
+    .comp_gre_in2(in2),
+    .comp_les_in1(in3),
+    .comp_les_in2(in4),
+    .comp_gre(comp_gre),
+    .comp_les(comp_les),
+    .data_out(actual_mem_data),
+    .re(re),
+    .we(we)
+);
+
+ seven_segment_display u_seven_segment_display (
+    .clk(clk),                // Connect the 100 MHz clock
+    .reset(reset),            // Connect the reset signal
+    .number1(mx),        // Connect the first input number (0-31)
+    .number2(mn),        // Connect the second input number (0-31)
+    .an(an),                  // Connect the anode signals (8 displays)
+    .a_to_g(a_to_g)           // Connect the cathode signals (7 segments)
+);
+
+
+endmodule
