@@ -18,7 +18,8 @@ module min_mex
     output wire [6:0] a_to_g,
     output wire re,
     output wire we,
-    output wire[2:0] temp_addr
+    output wire dirty
+//    output wire[2:0] temp_addr
 );
 //wire [3:0] state;
 wire dp_done;
@@ -55,7 +56,8 @@ datapath_unit (
     .mn(mn),
     .rew(re),
     .wew(we),
-    .tempaddr(temp_addr)
+    .dirty(dirty)
+//    .tempaddr(temp_addr)
 );
 
  seven_segment_display u_seven_segment_display (
