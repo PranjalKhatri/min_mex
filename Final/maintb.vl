@@ -13,6 +13,8 @@ module min_mex_tb;
     
     wire outValid;
     wire [DATA_WIDTH-1:0] data_out;
+
+    wire [ADDR_WIDTH-1:0] max_addr,min_addr;
     
     // Instantiate the min_mex module
     topG_AndrewTate_orz #(.ADDR_WIDTH(ADDR_WIDTH), .DATA_WIDTH(DATA_WIDTH)) dut (
@@ -23,7 +25,9 @@ module min_mex_tb;
         .addr(addr),
         .data(data),
         .outValid(outValid),
-        .actual_mem_data(data_out)
+        .actual_mem_data(data_out),
+        .min_addr(min_addr),
+        .max_addr(max_addr)
     );
     always @(*) begin
         // $monitor("TIME: %0t | clk: %b | reset: %b | dataValid: %b | read: %b | addr: %b | data: %d | outValid: %b | data_out: %d", 
@@ -160,6 +164,7 @@ module min_mex_tb;
         end
         #100
         $display("min %d, max %d",dut.mn,dut.mx);
+        $display("minaddr %d, maxaddr %d",min_addr,max_addr);
         #580 $finish;
     end
     

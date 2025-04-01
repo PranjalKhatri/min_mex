@@ -14,12 +14,14 @@ module topG_AndrewTate_orz
     output wire outValid,
     output wire[DATA_WIDTH: 0] actual_mem_data,
     output wire [7:0] an,
-    output wire[3:0] state,
     output wire [6:0] a_to_g,
-    output wire dirty
+    output wire [ADDR_WIDTH-1:0] max_addr,
+    output wire [ADDR_WIDTH-1:0] min_addr
+    // output wire[3:0] state,
+    // output wire dirty
 //    output wire[2:0] temp_addr
 );
-//wire [3:0] state;
+wire [3:0] state;
 wire dp_done;
 //wire resetComplete;
 wire [DATA_WIDTH-1:0] mx,mn;
@@ -51,6 +53,8 @@ controller control_unit (
     .comp_les(comp_les),
     .greflag(greflag),
     .lesflag(lesflag),
+    .max_addr(max_addr),
+    .min_addr(min_addr),
     .in1(in1),
     .in2(in2),
     .in3(in3),

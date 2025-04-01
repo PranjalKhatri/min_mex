@@ -20,6 +20,7 @@ module datapath
     output wire lesflag
 
 );
+wire dirty;
 wire[DATA_WIDTH:0] actual_mem_data;
 assign data_out = (re && !we) ? actual_mem_data : 0;
 assign actual_mem_data = (!re && we) ? mem_data : 'hz;
