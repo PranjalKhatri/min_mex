@@ -54,11 +54,12 @@ module min_mex_tb;
         $display("Writing data to memory...");
         dataValid = 1; read = 0;
         // for (integer i = 0; i < (1 << ADDR_WIDTH); i = i + 1) begin
-        #10 addr = 0; data = $random(seed)&5'b11111; // Write (i + 1) to address i
-        read=1;
+        // #10 addr = 0; data = $random(seed)&5'b11111; // Write (i + 1) to address i
+        // read=1;
             // #5 read=0;
         $display("Data write at address %d with value %d",addr,data);
         // end
+        /*
         #10 read=0;
         #10 addr=1;data=$random(seed)&5'b111111;
         #10 read=1;
@@ -140,42 +141,44 @@ module min_mex_tb;
         #100 read = 0; // Deassert dataValid
         // Read data back
         #10  addr = 4'b0010;
+        */
         // Wait for output to become valid
         #20;
-        $display("Reading data from memory...");
-        // for (integer i = 0; i < (1 << ADDR_WIDTH); i = i + 1) begin
-        //     addr = i; // Read from address i
-        //     #10; // Wait for output to become valid
-        //     $display("Data at address %d: %d", addr, data_out);
-        // end
+        $display("writing data to memory...");
+        for (integer i = 0; i < (1 << ADDR_WIDTH); i = i + 1) begin
+            #10 read=0;
+            #10 addr = i;data=$random(seed)&5'b11111; // Read from address i
+            #10 read=1; // Wait for output to become valid
+            $display("Data write at address %d: %d", addr, data);
+        end
         // Display results
-        // $display("Data at address %b: %b", addr, data_out);
-        
+        $display("Data at address %b: %b", addr, data_out);
+        dataValid=0;
         // End simulation
         #1000 $display("data at various locations:");
         for (integer i = 0; i < (1 << ADDR_WIDTH); i = i + 1) begin
              addr = i; // Read from address i
-            #10; // Wait for output to become valid
+            #50; // Wait for output to become valid
             $display("Data at address %d: %d", addr, data_out);
         end
         #100
-        $display("min %d, max %d",dut.mn,dut.mx);
-        data=15;
-        addr=1;
-        #10 reset=1;
-        #20 reset=0;
-         #200
-        $display("Writing data to memory...");
-        dataValid = 1; read = 0;
-        // for (integer i = 0; i < (1 << ADDR_WIDTH); i = i + 1) begin
-        #10 addr = 2; data = $random(seed)&5'b11111; // Write (i + 1) to address i
-        read=1;
-         $display("Data write at address %d with value %d",addr,data);
-        // end
-        #10 read=0;
-        #10 dataValid=0;
-        #2000;
-        $display("min %d, max %d",dut.mn,dut.mx);
+        // $display("min %d, max %d",dut.mn,dut.mx);
+        // data=15;
+        // addr=1;
+        // #10 reset=1;
+        // #20 reset=0;
+        //  #200
+        // $display("Writing data to memory...");
+        // dataValid = 1; read = 0;
+        // // for (integer i = 0; i < (1 << ADDR_WIDTH); i = i + 1) begin
+        // #10 addr = 2; data = $random(seed)&5'b11111; // Write (i + 1) to address i
+        // read=1;
+        //  $display("Data write at address %d with value %d",addr,data);
+        // // end
+        // #10 read=0;
+        // #10 dataValid=0;
+        // #2000;
+        $display("min %d, max %d at address 10 and 12 respectively",dut.mn,dut.mx);
         #480 $finish;
     end
     

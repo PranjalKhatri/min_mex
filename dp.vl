@@ -175,9 +175,9 @@ always @(posedge clk) begin
         end
         S_RUN_INTERMEDIATE_1 : begin
             // $display("memaddr %d, tempaddr %d, memdata %d",mem_addr,temp_addr,mem_data);
-            $display("value at memdata and and %d %d %d",mem_data,mem_data&6'b100000,temp_addr);
+            // $display("value at memdata and and %d %d %d",mem_data,mem_data&6'b100000,temp_addr);
           if(mem_data&6'b100000)begin
-          $display("inside");
+        //   $display("inside");
             in1 <= mx;
             in2 <= mem_data;
             in3 <= mn;
