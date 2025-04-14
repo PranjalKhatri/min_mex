@@ -2,7 +2,7 @@ module seven_segment_display(
     input wire clk,              // 100 MHz clock from Nexys A7
     input wire reset,            // Reset button
     input wire [4:0] number1,    // First 5-bit input number (0-31)
-    input wire [4:0] number2,    // Second 5-bit input number (0-31)
+    // input wire [4:0] number2,    // Second 5-bit input number (0-31)
     output reg [7:0] an,         // Anode signals for 8 displays
     output reg [6:0] a_to_g      // Cathode signals for segments a-g
 );
@@ -25,7 +25,10 @@ localparam ZERO  = 7'b0000001;  // 0
     localparam D     = 7'b1000010;  // d
     localparam E     = 7'b0110000;  // E
     localparam F     = 7'b0111000;  // F
-    
+    localparam H     = 7'b1001000;  // H
+    localparam R     = 7'b1111010;  // r (lowercase)
+
+
     // For the 5-bit numbers (0-31), we need tens and ones digits
     // Convert number1 to BCD
     wire [3:0] number1_tens;
@@ -36,8 +39,8 @@ localparam ZERO  = 7'b0000001;  // 0
     // Convert number2 to BCD
     wire [3:0] number2_tens;
     wire [3:0] number2_ones;
-    assign number2_tens = number2 / 10;  // Integer division gives tens digit
-    assign number2_ones = number2 % 10;  // Modulo gives ones digit
+    assign number2_tens = R;  // Integer division gives tens digit
+    assign number2_ones = D;  // Modulo gives ones digit
     
     // Counter for time multiplexing
     reg [19:0] refresh_counter = 0;
